@@ -7,7 +7,9 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
 /**
- * UpdateFoodStatsEvent is fired when a player's food value is updated.
+ * UpdateFoodStatsEvent is fired when a player's food value is updated. Fired whenever {@link FoodStats#onUpdate(EntityPlayer)}
+ * is ticked.
+ * <p>
  * This event is {@link Cancelable}.
  * This Event does not have a {@link Result}.
  * This event is fired on the {@link MinecraftForge#EVENT_BUS}.

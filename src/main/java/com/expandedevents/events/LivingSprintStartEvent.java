@@ -6,7 +6,9 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
 /**
- * UpdateFoodStatsEvent is fired when an entity starts sprinting.
+ * LivingSprintStartEvent is fired when an entity starts sprinting. Fired when {@link EntityLivingBase#setSprinting(boolean)}
+ * receives a true value.
+ * <p>
  * This event is {@link Cancelable}.
  * This Event does not have a {@link Result}.
  * This event is fired on the {@link MinecraftForge#EVENT_BUS}.
