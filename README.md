@@ -2,7 +2,7 @@
 Expanded Events adds a number of new event handlers to Minecraft. This mod is for developers who want to access these methods without needing to write mixins every time.
 
 ## New Events
-- **[BaubleAttributeModifierEvent]():** (Requires Baubles) Expands equipment slot attributes to baubles, allowing the addition and removal of bauble attribute modifiers.
+- **[BaubleAttributeModifierEvent](https://github.com/Invadermonky/ExpandedEvents/blob/master/src/main/java/com/expandedevents/events/BaubleAttributeModifierEvent.java):** (Requires Baubles) Expands equipment slot attributes to baubles, allowing the addition and removal of bauble attribute modifiers.
 - **[ItemAttributeModifierEvent](https://github.com/Invadermonky/ExpandedEvents/blob/master/src/main/java/com/expandedevents/events/ItemAttributeModifierEvent.java):** A backport of Forge 1.13+ `ItemAttributeModifierEvent`, allowing addition and removal of item attribute modifiers.
 - **[LivingSprintStartEvent](https://github.com/Invadermonky/ExpandedEvents/blob/master/src/main/java/com/expandedevents/events/LivingSprintStartEvent.java):** Fired whenever a living entity starts sprinting. Can be cancelled.
 - **[LivingSprintStopEvent](https://github.com/Invadermonky/ExpandedEvents/blob/master/src/main/java/com/expandedevents/events/LivingSprintStopEvent.java):** Fired whenever a living entity stops sprinting. Can be cancelled.
