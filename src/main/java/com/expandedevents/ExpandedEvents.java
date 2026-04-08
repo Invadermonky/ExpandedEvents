@@ -1,6 +1,6 @@
 package com.expandedevents;
 
-import com.expandedevents.capabilities.CapabilityBaublesAttributes;
+import com.expandedevents.capabilities.baubles.CapabilityBaublesAttributes;
 import com.expandedevents.handlers.BaublesEventHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;

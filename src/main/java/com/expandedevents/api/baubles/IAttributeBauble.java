@@ -1,4 +1,4 @@
-package com.expandedevents.capabilities;
+package com.expandedevents.api.baubles;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;

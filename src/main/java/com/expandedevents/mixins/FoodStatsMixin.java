@@ -1,6 +1,6 @@
 package com.expandedevents.mixins;
 
-import com.expandedevents.events.UpdateFoodStatsEvent;
+import com.expandedevents.api.event.UpdateFoodStatsEvent;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;

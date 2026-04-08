@@ -1,10 +1,10 @@
-package com.expandedevents.utils;
+package com.expandedevents.api.baubles;
 
 import baubles.api.BaubleType;
-import com.expandedevents.capabilities.CapabilityBaublesAttributes;
-import com.expandedevents.capabilities.IAttributeBauble;
-import com.expandedevents.capabilities.IBaublesAttributesHandler;
-import com.expandedevents.events.BaubleAttributeModifierEvent;
+import com.expandedevents.capabilities.baubles.CapabilityBaublesAttributes;
+import com.expandedevents.capabilities.baubles.IBaublesAttributesHandler;
+import com.expandedevents.api.event.BaubleAttributeModifierEvent;
+import com.expandedevents.utils.ConstantsEE;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.resources.I18n;

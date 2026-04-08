@@ -1,4 +1,4 @@
-package com.expandedevents.capabilities;
+package com.expandedevents.capabilities.baubles;
 
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.ai.attributes.AttributeModifier;

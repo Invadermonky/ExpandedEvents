@@ -1,4 +1,4 @@
-package com.expandedevents.capabilities;
+package com.expandedevents.capabilities.baubles;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;

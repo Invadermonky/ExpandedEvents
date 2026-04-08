@@ -1,4 +1,4 @@
-package com.expandedevents.events;
+package com.expandedevents.api.event;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.common.MinecraftForge;

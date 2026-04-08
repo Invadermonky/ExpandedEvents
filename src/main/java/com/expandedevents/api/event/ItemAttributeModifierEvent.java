@@ -1,28 +1,43 @@
-package com.expandedevents.events;
+package com.expandedevents.api.event;
 
-import baubles.api.BaubleType;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
-public class BaubleAttributeModifierEvent extends Event {
+/**
+ * This event is fired when the attributes for an ItemStack are being calculated.
+ * Attributes are calculated on the server when equipping and unequipping an item to add and remove attributes respectively, both must be consistent.
+ * Attributes are calculated on the client when rendering an item's tooltip to show relevant attributes.
+ * <p>
+ * Note that this event is fired regardless of if the stack has NBT overriding attributes or not. If your attribute should be
+ * ignored when attributes are overridden, you can check for the presence of the {@code AttributeModifiers} tag.
+ * <p>
+ * This event is {@link Cancelable}.
+ * <br>
+ * This Event does not have a {@link Result}.
+ * <br>
+ * This event is fired on the {@link net.minecraftforge.common.MinecraftForge#EVENT_BUS}.
+ */
+public class ItemAttributeModifierEvent extends Event {
     private final ItemStack stack;
-    private final BaubleType baubleType;
+    private final EntityEquipmentSlot slotType;
     private final Multimap<String, AttributeModifier> originalModifiers;
     private Multimap<String, AttributeModifier> unmodifiableModifiers;
     @Nullable
     private Multimap<String, AttributeModifier> modifiableModifiers;
 
-    public BaubleAttributeModifierEvent(ItemStack stack, BaubleType baubleType, Multimap<String, AttributeModifier> modifiers) {
+    public ItemAttributeModifierEvent(ItemStack stack, EntityEquipmentSlot slotType, Multimap<String, AttributeModifier> modifiers) {
         this.stack = stack;
-        this.baubleType = baubleType;
+        this.slotType = slotType;
         this.originalModifiers = modifiers;
         this.unmodifiableModifiers = modifiers;
     }
@@ -126,8 +141,8 @@ public class BaubleAttributeModifierEvent extends Event {
     }
 
     /** Gets the slot containing this stack */
-    public BaubleType getBaubleType() {
-        return this.baubleType;
+    public EntityEquipmentSlot getSlotType() {
+        return this.slotType;
     }
 
     /** Gets the item stack instance */

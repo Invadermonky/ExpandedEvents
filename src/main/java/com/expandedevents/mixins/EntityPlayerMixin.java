@@ -1,7 +1,7 @@
 package com.expandedevents.mixins;
 
-import com.expandedevents.events.PlayerExperienceGainEvent;
-import com.expandedevents.events.PlayerLevelUpEvent;
+import com.expandedevents.api.event.PlayerExperienceGainEvent;
+import com.expandedevents.api.event.PlayerLevelUpEvent;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import net.minecraft.entity.player.EntityPlayer;

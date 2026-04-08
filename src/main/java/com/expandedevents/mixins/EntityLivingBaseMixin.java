@@ -1,7 +1,7 @@
 package com.expandedevents.mixins;
 
-import com.expandedevents.events.LivingSprintStartEvent;
-import com.expandedevents.events.LivingSprintStopEvent;
+import com.expandedevents.api.event.LivingSprintStartEvent;
+import com.expandedevents.api.event.LivingSprintStopEvent;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;

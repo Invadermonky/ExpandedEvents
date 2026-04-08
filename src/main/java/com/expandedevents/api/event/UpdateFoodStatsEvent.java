@@ -1,4 +1,4 @@
-package com.expandedevents.events;
+package com.expandedevents.api.event;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.FoodStats;

@@ -1,8 +1,8 @@
 package com.expandedevents.mixins;
 
 import com.expandedevents.ExpandedEvents;
-import com.expandedevents.events.ItemAttributeModifierEvent;
-import com.expandedevents.utils.BaublesAttributeHelper;
+import com.expandedevents.api.event.ItemAttributeModifierEvent;
+import com.expandedevents.api.baubles.BaublesAttributeHelper;
 import com.google.common.collect.Multimap;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
