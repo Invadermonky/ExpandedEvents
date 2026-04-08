@@ -3,6 +3,7 @@
 ### Added
 - Added `BaubleAttributeModifierEvent`
 - Added `ItemAttributeModifierEvent`
+- Added `IAttributeBauble` interface for easier attribute bauble creation
 
 ---
 

@@ -2,6 +2,7 @@ package com.expandedevents.utils;
 
 import baubles.api.BaubleType;
 import com.expandedevents.capabilities.CapabilityBaublesAttributes;
+import com.expandedevents.capabilities.IAttributeBauble;
 import com.expandedevents.capabilities.IBaublesAttributesHandler;
 import com.expandedevents.events.BaubleAttributeModifierEvent;
 import com.google.common.collect.HashMultimap;
@@ -22,13 +23,42 @@ import java.util.List;
 import java.util.Map;
 
 public class BaublesAttributeHelper {
+    /**
+     * Gets the base attribute modifiers that belong to the passed ItemStack.
+     * <p>
+     * This method <STRONG>DOES</STRONG> fire {@link BaubleAttributeModifierEvent}.
+     *
+     * @param stack the bauble ItemStack
+     * @param type the bauble type
+     * @return A map containing all bauble attribute modifiers.
+     */
     public static Multimap<String, AttributeModifier> getBaubleAttributeModifiers(ItemStack stack, BaubleType type) {
-        Multimap<String, AttributeModifier> modifiers = HashMultimap.create();
+        Multimap<String, AttributeModifier> modifiers = getBaubleBaseAttributes(stack, type);
         BaubleAttributeModifierEvent attributeEvent = new BaubleAttributeModifierEvent(stack, type, modifiers);
         MinecraftForge.EVENT_BUS.post(attributeEvent);
         return attributeEvent.getModifiers();
     }
 
+    /**
+     * Gets the base attribute modifiers that belong to the passed ItemStack. This will be the value returned by the method
+     * {@link IAttributeBauble#getBaubleAttributeModifiers(BaubleType, ItemStack)} if the item implements {@link IAttributeBauble}
+     * or an empty map.
+     * <p>
+     * This method <STRONG>DOES NOT</STRONG> fire {@link BaubleAttributeModifierEvent}.
+     *
+     * @param stack the bauble ItemStack
+     * @param type the bauble type
+     * @return A map containing all bauble attribute modifiers.
+     */
+    public static Multimap<String, AttributeModifier> getBaubleBaseAttributes(ItemStack stack, BaubleType type) {
+        if(stack.getItem() instanceof IAttributeBauble) {
+            return ((IAttributeBauble) stack.getItem()).getBaubleAttributeModifiers(type, stack);
+        } else {
+            return HashMultimap.create();
+        }
+    }
+
+    /** Gets the current player bauble attribute modifiers. */
     public static Multimap<String, AttributeModifier> getBaublesAttributes(EntityPlayer player) {
         IBaublesAttributesHandler handler = getBaublesAttributeHandler(player);
         if(handler != null) {
@@ -37,6 +67,7 @@ public class BaublesAttributeHelper {
         return HashMultimap.create();
     }
 
+    /** Removes all current bauble attribute modifiers from the player. */
     public static void removeBaublesAttributes(EntityPlayer player) {
         IBaublesAttributesHandler handler = getBaublesAttributeHandler(player);
         if(handler != null) {
@@ -44,6 +75,7 @@ public class BaublesAttributeHelper {
         }
     }
 
+    /** Adds the passed bauble attribute modifiers to the player. */
     public static void addBaublesAttributes(EntityPlayer player, Multimap<String, AttributeModifier> multimap) {
         IBaublesAttributesHandler handler = getBaublesAttributeHandler(player);
         if(handler != null) {
@@ -51,11 +83,20 @@ public class BaublesAttributeHelper {
         }
     }
 
+    /** Gets the baubles attribute capability for the passed player. */
     @Nullable
     public static IBaublesAttributesHandler getBaublesAttributeHandler(EntityPlayer player) {
         return player.getCapability(CapabilityBaublesAttributes.BAUBLES_ATTRIBUTES_CAPABILITY, null);
     }
 
+    /**
+     * Appends the bauble attribute modifier tooltip to the existing item tooltip.
+     *
+     * @param stack the ItemStack object
+     * @param player the player querying the item tooltip
+     * @param tooltip the current ItemStack tooltip
+     * @param hideFlags whether the attribute modifier information should be excluded from this item
+     */
     public static void addBaublesAttributeTooltip(ItemStack stack, @Nullable EntityPlayer player, List<String> tooltip, int hideFlags) {
         for (BaubleType type : BaubleType.values()) {
             Multimap<String, AttributeModifier> multimap = getBaubleAttributeModifiers(stack, type);
