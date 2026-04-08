@@ -33,7 +33,7 @@ public class BaublesAttributeHelper {
      * @return A map containing all bauble attribute modifiers.
      */
     public static Multimap<String, AttributeModifier> getBaubleAttributeModifiers(ItemStack stack, BaubleType type) {
-        Multimap<String, AttributeModifier> modifiers = getBaubleBaseAttributes(stack, type);
+        Multimap<String, AttributeModifier> modifiers = getBaubleItemAttributeModifiers(stack, type);
         BaubleAttributeModifierEvent attributeEvent = new BaubleAttributeModifierEvent(stack, type, modifiers);
         MinecraftForge.EVENT_BUS.post(attributeEvent);
         return attributeEvent.getModifiers();
@@ -50,7 +50,7 @@ public class BaublesAttributeHelper {
      * @param type the bauble type
      * @return A map containing all bauble attribute modifiers.
      */
-    public static Multimap<String, AttributeModifier> getBaubleBaseAttributes(ItemStack stack, BaubleType type) {
+    public static Multimap<String, AttributeModifier> getBaubleItemAttributeModifiers(ItemStack stack, BaubleType type) {
         if(stack.getItem() instanceof IAttributeBauble) {
             return ((IAttributeBauble) stack.getItem()).getBaubleAttributeModifiers(type, stack);
         } else {
