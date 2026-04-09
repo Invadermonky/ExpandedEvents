@@ -102,7 +102,7 @@ public class BaublesAttributeHelper {
             Multimap<String, AttributeModifier> multimap = getBaubleAttributeModifiers(stack, type);
             if (!multimap.isEmpty() && (hideFlags & 2) == 0) {
                 tooltip.add("");
-                tooltip.add(I18n.format("item.modifiers." + type.name().toLowerCase()));
+                tooltip.add(I18n.format("bauble.modifiers." + type.name().toLowerCase()));
 
                 for (Map.Entry<String, AttributeModifier> entry : multimap.entries()) {
                     AttributeModifier attributemodifier = entry.getValue();
