@@ -19,6 +19,7 @@ public interface IAttributeBauble extends IBauble {
      * <p>
      * For attribute values that do not stack, define a static UUID. For attribute values that stack with similar baubles (such as rings),
      * do not define an attribute modifier UUID.
+     *
      * @param baubleType The bauble type. Baubles that use Bubbles <code>IBaubleType</code> implementation should return {@link BaubleType#TRINKET}.
      * @param stack The ItemStack object.
      * @return A list of attribute modifiers applied when the bauble is equipped.
