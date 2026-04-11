@@ -69,28 +69,28 @@ public class UpdateFoodStatsEvent extends PlayerEvent {
     }
 
     /**
-     * @return the amount of exhaustion incurred by natural regeneration while food level is >= 10.
+     * @return the amount of exhaustion incurred by natural regeneration while food level is &#62;= 10.
      */
     public float getSlowHealExhaustion() {
         return this.slowHealExhaustion;
     }
 
     /**
-     * Modifies the amount of exhaustion incurred by natural healing while food level is >= 10.
+     * Modifies the amount of exhaustion incurred by natural healing while food level is &#62;= 10.
      */
     public void setSlowHealExhaustion(float slowHealExhaustion) {
         this.slowHealExhaustion = slowHealExhaustion;
     }
 
     /**
-     * @return the amount of exhaustion incurred by natural regeneration while food level is >= 18.
+     * @return the amount of exhaustion incurred by natural regeneration while food level is &#62;= 18.
      */
     public float getFastHealExhaustion() {
         return this.fastHealExhaustion;
     }
 
     /**
-     * Modifies the amount of exhaustion incurred by natural healing while food level is >= 18.
+     * Modifies the amount of exhaustion incurred by natural healing while food level is &#62;= 18.
      */
     public void setFastHealExhaustion(float fastHealExhaustion) {
         this.fastHealExhaustion = fastHealExhaustion;
