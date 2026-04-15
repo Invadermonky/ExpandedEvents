@@ -1,7 +1,7 @@
 {
   "package": "com.expandedevents.mixins" ,
   "required": true ,
-  "refmap": "mixins.exevents.refmap.json" ,
+  "refmap": "mixins.expandedevents.refmap.json" ,
   "target": "@env(DEFAULT)" ,
   "minVersion": "0.8.5" ,
   "compatibilityLevel": "JAVA_8" ,

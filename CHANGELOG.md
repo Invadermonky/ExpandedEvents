@@ -1,4 +1,10 @@
 # Changelog
+## 1.1.1
+### Fixed
+- Fixed mixin refmap issue
+
+---
+
 ## 1.1.0
 ### Added
 - Added `BaubleAttributeModifierEvent`
