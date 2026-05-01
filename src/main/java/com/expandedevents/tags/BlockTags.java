@@ -5,7 +5,7 @@ import net.minecraft.block.Block;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MushroomSoilTag {
+public class BlockTags {
     private static final Set<Block> MUSHROOM_SOIL_BLOCKS = new HashSet<>();
 
     public static boolean isMushroomSoil(Block block) {

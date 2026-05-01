@@ -1,6 +1,6 @@
 package com.expandedevents.api;
 
-import com.expandedevents.tags.MushroomSoilTag;
+import com.expandedevents.tags.BlockTags;
 import net.minecraft.block.Block;
 
 public class ExpandedEventsAPI {
@@ -10,6 +10,6 @@ public class ExpandedEventsAPI {
      * regardless of light level.
      */
     public static void registerMushroomSoil(Block block) {
-        MushroomSoilTag.registerMushroomSoil(block);
+        BlockTags.registerMushroomSoil(block);
     }
 }

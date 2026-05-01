@@ -1,6 +1,6 @@
 package com.expandedevents.mixins;
 
-import com.expandedevents.tags.MushroomSoilTag;
+import com.expandedevents.tags.BlockTags;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.block.BlockMushroom;
@@ -18,7 +18,7 @@ public class BlockMushroomMixin {
     @ModifyReturnValue(method = "canBlockStay", at = @At("RETURN"))
     private boolean richSoilSurvivalMixin(boolean original, @Local(argsOnly = true) World world, @Local(argsOnly = true) BlockPos pos) {
         if(!original) {
-            return MushroomSoilTag.isMushroomSoil(world.getBlockState(pos.down()).getBlock());
+            return BlockTags.isMushroomSoil(world.getBlockState(pos.down()).getBlock());
         }
         return original;
     }
