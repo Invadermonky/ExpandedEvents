@@ -18,13 +18,8 @@ import java.util.Collection;
  * Attributes are calculated on the server when equipping and unequipping an item to add and remove attributes respectively, both must be consistent.
  * Attributes are calculated on the client when rendering an item's tooltip to show relevant attributes.
  * <p>
- * Note that this event is fired regardless of if the stack has NBT overriding attributes or not. If your attribute should be
- * ignored when attributes are overridden, you can check for the presence of the {@code AttributeModifiers} tag.
- * <p>
- * This event is {@link Cancelable}.
- * <br>
- * This Event does not have a {@link Result}.
- * <br>
+ * This event is not {@link Cancelable}.<br>
+ * This Event does not have a {@link Result}.<br>
  * This event is fired on the {@link net.minecraftforge.common.MinecraftForge#EVENT_BUS}.
  */
 public class ItemAttributeModifierEvent extends Event {

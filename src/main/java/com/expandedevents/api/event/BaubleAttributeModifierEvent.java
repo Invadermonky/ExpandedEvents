@@ -7,11 +7,21 @@ import com.google.common.collect.Multimaps;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
+/**
+ * This event is fired when the attributes for a Bauble ItemStack are being calculated.
+ * Attributes are calculated on the server when equipping and unequipping an item to add and remove attributes respectively, both must be consistent.
+ * Attributes are calculated on the client when rendering an item's tooltip to show relevant attributes.
+ * <p>
+ * This event is not {@link Cancelable}.<br>
+ * This Event does not have a {@link Result}.<br>
+ * This event is fired on the {@link net.minecraftforge.common.MinecraftForge#EVENT_BUS}.
+ */
 public class BaubleAttributeModifierEvent extends Event {
     private final ItemStack stack;
     private final BaubleType baubleType;
