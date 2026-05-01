@@ -4,8 +4,10 @@ Expanded Events adds a number of new event handlers to Minecraft. This mod is fo
 ## New Events
 - **[BaubleAttributeModifierEvent](https://github.com/Invadermonky/ExpandedEvents/blob/master/src/main/java/com/expandedevents/api/event/BaubleAttributeModifierEvent.java):** (Requires Baubles) Expands equipment slot attributes to baubles, allowing the addition and removal of bauble attribute modifiers.
 - **[ItemAttributeModifierEvent](https://github.com/Invadermonky/ExpandedEvents/blob/master/src/main/java/com/expandedevents/api/event/ItemAttributeModifierEvent.java):** A backport of Forge 1.13+ `ItemAttributeModifierEvent`, allowing addition and removal of item attribute modifiers.
+- **[LivingBlockDamageEvent](https://github.com/Invadermonky/ExpandedEvents/blob/master/src/main/java/com/expandedevents/api/event/LivingBlockDamageEvent.java):** Fired whenever a living entity blocks damage with a shield. Can be used to modify shield behavior.
 - **[LivingSprintStartEvent](https://github.com/Invadermonky/ExpandedEvents/blob/master/src/main/java/com/expandedevents/api/event/LivingSprintStartEvent.java):** Fired whenever a living entity starts sprinting. Can be cancelled.
 - **[LivingSprintStopEvent](https://github.com/Invadermonky/ExpandedEvents/blob/master/src/main/java/com/expandedevents/api/event/LivingSprintStopEvent.java):** Fired whenever a living entity stops sprinting. Can be cancelled.
+- **[PlayerShieldDisabledEvent](https://github.com/Invadermonky/ExpandedEvents/blob/master/src/main/java/com/expandedevents/api/event/PlayerShieldDisabledEvent.java):** Fired whenever a player's shield is about to be disabled by damage. Can be cancelled.
 - **[UpdateFoodStatsEvent](https://github.com/Invadermonky/ExpandedEvents/blob/master/src/main/java/com/expandedevents/api/event/UpdateFoodStatsEvent.java):** Fired whenever the player's food stats are updated. Can be used to cancel natural healing or reduce passive saturation drain.
 
 ## Features

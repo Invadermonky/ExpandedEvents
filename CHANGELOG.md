@@ -1,4 +1,11 @@
 # Changelog
+## 1.2.0
+### Added
+- Added `LivingBlockDamageEvent`
+- Added `PlayerShieldDisabledEvent`
+
+---
+
 ## 1.1.1
 ### Fixed
 - Fixed mixin refmap issue
