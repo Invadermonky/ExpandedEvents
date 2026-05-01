@@ -12,3 +12,4 @@ Expanded Events adds a number of new event handlers to Minecraft. This mod is fo
 
 ## Features
 - **[IAttributeBauble](https://github.com/Invadermonky/ExpandedEvents/blob/master/src/main/java/com/expandedevents/api/baubles/IAttributeBauble.java):** A expansion to the `IBauble` item interface that adds native attribute support to bauble items.
+- **[Mushroom Soil Registry](https://github.com/Invadermonky/ExpandedEvents/blob/master/src/main/java/com/expandedevents/api/ExpandedEventsAPI.java):** A backport of Minecraft's `mushroom_grow_block` tag.

@@ -3,6 +3,7 @@
 ### Added
 - Added `LivingBlockDamageEvent`
 - Added `PlayerShieldDisabledEvent`
+- Added registry for valid mushroom soils
 
 ---
 
