@@ -1,18 +1,18 @@
 package com.expandedevents.mixins;
 
-import com.expandedevents.api.event.PlayerExperienceGainEvent;
-import com.expandedevents.api.event.PlayerLevelUpEvent;
-import com.llamalad7.mixinextras.sugar.Local;
-import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
+import com.expandedevents.api.event.PlayerShieldDisabledEvent;
+import com.llamalad7.mixinextras.sugar.Share;
+import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-//TODO: Figure out why these methods aren't remapping correctly in obfuscated environments.
 @Mixin(EntityPlayer.class)
 public class EntityPlayerMixin {
     @Unique
@@ -23,38 +23,32 @@ public class EntityPlayerMixin {
 
     /*
     ##############################################
-    Player level-up listener
+    Player disable shield event
     ##############################################
     */
 
-    /**
-     * @author Invadermonky
-     * @reason Adds an event listener to player level ups.
-     */
-    @Inject(method = "addExperienceLevel", at = @At("HEAD"), remap = false)
-    private void onLevelUpEventMixin(int levels, CallbackInfo ci) {
-        PlayerLevelUpEvent event = new PlayerLevelUpEvent(this.expandedEvents$getThis(), levels);
+    @Inject(
+            method = "disableShield",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/player/EntityPlayer;getCooldownTracker()Lnet/minecraft/util/CooldownTracker;"
+            ),
+            cancellable = true
+    )
+    private void disableShieldEventMixin(boolean disableShield, CallbackInfo ci, @Share("disableShieldEvent")LocalRef<PlayerShieldDisabledEvent> localRef) {
+        PlayerShieldDisabledEvent event = new PlayerShieldDisabledEvent(this.expandedEvents$getThis(), 100);
         MinecraftForge.EVENT_BUS.post(event);
-    }
-
-    /*
-    ##############################################
-    Player experience gain event handler
-    ##############################################
-    */
-
-    /**
-     * @author Invadermonky
-     * @reason Adds a cancellable event handler whenever a player gains experience.
-     */
-    @Inject(method = "addExperience", at = @At("HEAD"), cancellable = true, remap = false)
-    private void onGainExperienceEventMixin(int amount, CallbackInfo ci, @Local(argsOnly = true, ordinal = 0)LocalIntRef amountRef) {
-        PlayerExperienceGainEvent event = new PlayerExperienceGainEvent(this.expandedEvents$getThis(), amount);
-        MinecraftForge.EVENT_BUS.post(event);
+        localRef.set(event);
         if(event.isCanceled()) {
             ci.cancel();
-            return;
         }
-        amountRef.set(event.getExperienceAmount());
+    }
+
+    @ModifyConstant(
+            method = "disableShield",
+            constant = @Constant(intValue = 100, ordinal = 0)
+    )
+    private int modifyDisableDurationMixin(int original, @Share("disableShieldEvent")LocalRef<PlayerShieldDisabledEvent> localRef) {
+        return Math.max(1, localRef.get().getShieldDisableDuration());
     }
 }
