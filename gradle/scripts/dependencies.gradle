@@ -35,7 +35,7 @@ dependencies {
     runtimeOnly 'com.cleanroommc:osxnarratorblocker:1.0'
     compileOnly 'org.jetbrains:annotations:24.1.0'
 
-    runtimeOnly rfg.deobf('curse.maven:had-enough-items-557549:4543375')
+    runtimeOnly rfg.deobf('curse.maven:had-enough-items-557549:7938914')
 
     compileOnly rfg.deobf('curse.maven:baubles-227083:2518667')
     compileOnly rfg.deobf("curse.maven:bubbles-a-baubles-fork-995393:7736064")
