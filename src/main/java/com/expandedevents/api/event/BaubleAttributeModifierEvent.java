@@ -3,7 +3,6 @@ package com.expandedevents.api.event;
 import baubles.api.BaubleType;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.item.ItemStack;
@@ -61,7 +60,7 @@ public class BaubleAttributeModifierEvent extends Event {
     {
         if (this.modifiableModifiers == null) {
             this.modifiableModifiers = HashMultimap.create(this.originalModifiers);
-            this.unmodifiableModifiers = Multimaps.unmodifiableMultimap(this.modifiableModifiers);
+            this.unmodifiableModifiers = this.modifiableModifiers;
         }
         return this.modifiableModifiers;
     }

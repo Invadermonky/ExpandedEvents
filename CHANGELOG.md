@@ -1,4 +1,10 @@
 # Changelog
+## 1.2.1
+### Fixed
+- Fixed crash when other mods manually modify attribute values
+
+---
+
 ## 1.2.0
 ### Added
 - Added `LivingBlockDamageEvent`
