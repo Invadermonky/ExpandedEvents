@@ -1,4 +1,10 @@
 # Changelog
+## 1.2.2
+### Fixed
+- Fixed loading crash when baubles is not installed
+
+---
+
 ## 1.2.1
 ### Fixed
 - Fixed crash when other mods manually modify attribute values
