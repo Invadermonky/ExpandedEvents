@@ -32,8 +32,9 @@ public class BaublesEventHandler {
 
             for (int slot = 0; slot < handler.getSlots(); slot++) {
                 ItemStack stack = handler.getStackInSlot(slot);
-                if (stack.getItem() instanceof IBauble) {
-                    BaubleType type = ((IBauble) stack.getItem()).getBaubleType(stack);
+                IBauble bauble = BaublesAttributeHelper.getBaubleFromStack(stack);
+                if (bauble != null) {
+                    BaubleType type = bauble.getBaubleType(stack);
                     Multimap<String, AttributeModifier> currModifiers = BaublesAttributeHelper.getBaubleAttributeModifiers(stack, type);
                     player.getAttributeMap().applyAttributeModifiers(currModifiers);
                     BaublesAttributeHelper.addBaublesAttributes(player, currModifiers);

@@ -1,6 +1,8 @@
 package com.expandedevents.api.baubles;
 
 import baubles.api.BaubleType;
+import baubles.api.IBauble;
+import baubles.api.cap.BaublesCapabilities;
 import com.expandedevents.api.event.BaubleAttributeModifierEvent;
 import com.expandedevents.capabilities.baubles.CapabilityBaublesAttributes;
 import com.expandedevents.capabilities.baubles.IBaublesAttributesHandler;
@@ -51,7 +53,8 @@ public class BaublesAttributeHelper {
      * @return A map containing all bauble attribute modifiers.
      */
     public static Multimap<String, AttributeModifier> getBaubleItemAttributeModifiers(ItemStack stack, BaubleType type) {
-        if(stack.getItem() instanceof IAttributeBauble) {
+        IBauble bauble = getBaubleFromStack(stack);
+        if(bauble instanceof IAttributeBauble) {
             return ((IAttributeBauble) stack.getItem()).getBaubleAttributeModifiers(type, stack);
         } else {
             return HashMultimap.create();
@@ -141,6 +144,17 @@ public class BaublesAttributeHelper {
                     }
                 }
             }
+        }
+    }
+
+    @Nullable
+    public static IBauble getBaubleFromStack(ItemStack stack) {
+        if(stack.isEmpty()) {
+            return null;
+        } else if(stack.getItem() instanceof IBauble) {
+            return (IBauble) stack.getItem();
+        } else {
+            return stack.getCapability(BaublesCapabilities.CAPABILITY_ITEM_BAUBLE, null);
         }
     }
 }

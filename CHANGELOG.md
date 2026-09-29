@@ -1,4 +1,10 @@
 # Changelog
+## 1.2.3
+### Fixed
+- Fixed some edge case scenarios were items utilizing the `iBauble` item capability were not recognized by the bauble attribute handler.
+
+---
+
 ## 1.2.2
 ### Fixed
 - Fixed loading crash when baubles is not installed
