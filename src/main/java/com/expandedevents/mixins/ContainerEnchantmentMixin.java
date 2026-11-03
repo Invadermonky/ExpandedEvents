@@ -39,6 +39,7 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
     @Shadow @Final private World world;
     @Shadow @Final private BlockPos position;
     @Shadow @Final private Random rand;
+    @Shadow public int xpSeed;
     @Shadow public int[] enchantClue;
     @Shadow public int[] worldClue;
     @Shadow public int[] enchantLevels;
@@ -149,7 +150,7 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
     private List<EnchantmentData> generateEnchantmentListEventMixin(List<EnchantmentData> original, @Local(ordinal = 1) int enchantTier) {
         ItemStack toEnchant = this.tableInventory.getStackInSlot(0);
         ItemStack reagent = this.tableInventory.getStackInSlot(1);
-        GenerateEnchantmentListEvent event = new GenerateEnchantmentListEvent(this.world, this.position, toEnchant, reagent, enchantTier, this.enchantLevels[enchantTier], original);
+        GenerateEnchantmentListEvent event = new GenerateEnchantmentListEvent(this.world, this.position, toEnchant, reagent, this.xpSeed, enchantTier, this.enchantLevels[enchantTier], original);
         MinecraftForge.EVENT_BUS.post(event);
         if(!event.getEnchantments().isEmpty()) {
             //Logic is changed very slightly from Minecraft. Instead of accessing a random enchant from the list,

@@ -1,4 +1,10 @@
 # Changelog
+## 1.3.1
+### Added
+- Added `getXpSeed()` method to `GenerateEnchantmentListEvent`
+
+---
+
 ## 1.3.0
 ### Added
 - Added `GenerateEnchantmentListEvent`

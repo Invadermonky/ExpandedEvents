@@ -23,6 +23,7 @@ import java.util.List;
 public class GenerateEnchantmentListEvent extends BlockEvent {
     private final ItemStack stack;
     private final ItemStack reagent;
+    private final int xpSeed;
     private final int enchantTier;
     private final int originalEnchantmentLevel;
     private int enchantmentLevel;
@@ -32,10 +33,11 @@ public class GenerateEnchantmentListEvent extends BlockEvent {
     private List<EnchantmentData> unmodifiableEnchants;
     private List<EnchantmentData> modifiableEnchants;
 
-    public GenerateEnchantmentListEvent(World world, BlockPos pos, ItemStack toEnchant, ItemStack reagent, int enchantTier, int enchantmentLevel, List<EnchantmentData> enchants) {
+    public GenerateEnchantmentListEvent(World world, BlockPos pos, ItemStack toEnchant, ItemStack reagent, int xpSeed, int enchantTier, int enchantmentLevel, List<EnchantmentData> enchants) {
         super(world, pos, world.getBlockState(pos));
         this.stack = toEnchant;
         this.reagent = reagent;
+        this.xpSeed = xpSeed;
         this.enchantTier = enchantTier;
         this.originalEnchantmentLevel = this.enchantmentLevel = enchantmentLevel;
         this.levelCost = this.reagentCost = enchantTier + 1;
@@ -54,6 +56,13 @@ public class GenerateEnchantmentListEvent extends BlockEvent {
      */
     public ItemStack getReagent() {
         return reagent;
+    }
+
+    /**
+     *
+     */
+    public int getXpSeed() {
+        return xpSeed;
     }
 
     /**
