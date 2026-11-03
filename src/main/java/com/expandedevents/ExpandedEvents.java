@@ -2,9 +2,11 @@ package com.expandedevents;
 
 import com.expandedevents.capabilities.baubles.CapabilityBaublesAttributes;
 import com.expandedevents.handlers.BaublesEventHandler;
+import com.expandedevents.tags.ItemTags;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,5 +35,10 @@ public class ExpandedEvents {
             MinecraftForge.EVENT_BUS.register(new BaublesEventHandler());
             CapabilityBaublesAttributes.register();
         }
+    }
+
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        ItemTags.init();
     }
 }

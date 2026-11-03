@@ -1,4 +1,10 @@
 # Changelog
+## 1.3.0
+### Added
+- Added 
+
+---
+
 ## 1.2.3
 ### Fixed
 - Fixed some edge case scenarios were items utilizing the `iBauble` item capability were not recognized by the bauble attribute handler.
