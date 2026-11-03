@@ -2,6 +2,7 @@
 ## 1.3.0
 ### Added
 - Added `GenerateEnchantmentListEvent`
+- Added registry for enchanting reagent items
 
 ---
 
