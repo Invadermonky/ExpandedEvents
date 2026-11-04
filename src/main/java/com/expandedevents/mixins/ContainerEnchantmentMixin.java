@@ -172,14 +172,18 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
      * @author Invadermonky
      * @reason Changes the enchantment table enchantLevels reset value to -1 to support level 0 enchanting.
      */
-    @Inject(method = "onCraftMatrixChanged", at = @At("TAIL"))
+    @Inject(
+            method = "onCraftMatrixChanged",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lnet/minecraft/inventory/ContainerEnchantment;enchantLevels:[I",
+                    ordinal = 7
+            )
+    )
     private void modifyEnchantmentResetValue(IInventory inventory, CallbackInfo ci) {
-        ItemStack stack = this.tableInventory.getStackInSlot(0);
-        if(stack.isEmpty() || !stack.isItemEnchantable()) {
-            Arrays.fill(this.enchantLevels, -1);
-            Arrays.fill(this.ee$reagentCost, Short.MAX_VALUE);
-            this.ee$enchantmentCost = new int[] {1, 2, 3};
-        }
+        Arrays.fill(this.enchantLevels, -1);
+        Arrays.fill(this.ee$reagentCost, Short.MAX_VALUE);
+        this.ee$enchantmentCost = new int[] {1, 2, 3};
     }
 
     /**
