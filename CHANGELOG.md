@@ -5,7 +5,6 @@
 ### Changed
 - Changed `ContainerEnchantmentMixin#modifyEnchantmentResetValue()` injection point to improve compatibility
 ### Fixed
-- Added value reset to enchantment table mixins to prevent issues if the event injection fails
 - Fixed issue causing full stacks of lapis to be consumed when enchanting items
 
 ---

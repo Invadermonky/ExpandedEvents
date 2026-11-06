@@ -167,7 +167,6 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
     )
     private void resetEventValues(IInventory inventory, CallbackInfo ci) {
         Arrays.fill(this.enchantLevels, -1);
-        //Arrays.fill(this.ee$reagentCost, Short.MAX_VALUE);
         this.ee$enchantmentCost = new int[] {1, 2, 3};
     }
 
