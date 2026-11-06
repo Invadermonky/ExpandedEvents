@@ -46,44 +46,27 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
 
     @Unique private List<List<EnchantmentData>> ee$cachedEnchants;
     @Unique private int[] ee$enchantmentCost = new int[] {1, 2, 3};
+    //Reagent cost are initialized at Short.MAX_VALUE to prevent flickering when the reagent slot item changes.
     @Unique private int[] ee$reagentCost = new int[] {Short.MAX_VALUE, Short.MAX_VALUE, Short.MAX_VALUE};
 
     @Override
     public int ee$getEnchantmentLevelCost(int enchantmentTier) {
-        if(this.ee$enchantmentCost == null) {
-            this.ee$enchantmentCost = new int[] {1, 2, 3};
-        }
-        return enchantmentTier < this.ee$enchantmentCost.length ? this.ee$enchantmentCost[enchantmentTier] : enchantmentTier + 1;
+        return this.ee$enchantmentCost[enchantmentTier];
     }
 
     @Override
     public void ee$setEnchantmentLevelCost(int enchantmentTier, int levelCost) {
-        if(this.ee$enchantmentCost == null) {
-            this.ee$enchantmentCost = new int[] {1, 2, 3};
-        }
-        if(enchantmentTier < this.ee$enchantmentCost.length) {
-            this.ee$enchantmentCost[enchantmentTier] = levelCost;
-        }
+        this.ee$enchantmentCost[enchantmentTier] = levelCost;
     }
 
     @Override
     public int ee$getReagentCost(int enchantmentTier) {
-        if(this.ee$reagentCost == null) {
-            //Reagent cost are initialized at Short.MAX_VALUE to prevent flickering when the reagent slot item changes.
-            this.ee$reagentCost = new int[] {Short.MAX_VALUE, Short.MAX_VALUE, Short.MAX_VALUE};
-        }
-        return enchantmentTier < this.ee$reagentCost.length ? this.ee$reagentCost[enchantmentTier] : (enchantmentTier + 1);
+        return this.ee$reagentCost[enchantmentTier];
     }
 
     @Override
     public void ee$setReagentCost(int enchantmentTier, int reagentCost) {
-        if(this.ee$reagentCost == null) {
-            //Reagent cost are initialized at Short.MAX_VALUE to prevent flickering when the reagent slot item changes.
-            this.ee$reagentCost = new int[] {Short.MAX_VALUE, Short.MAX_VALUE, Short.MAX_VALUE};
-        }
-        if(enchantmentTier < this.ee$reagentCost.length) {
-            this.ee$reagentCost[enchantmentTier] = reagentCost;
-        }
+        this.ee$reagentCost[enchantmentTier] = reagentCost;
     }
 
     /**
@@ -102,13 +85,12 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
      */
     @Inject(method = "broadcastData", at = @At("RETURN"))
     private void addNewWindowProperties(IContainerListener crafting, CallbackInfo ci) {
-        int var = 10;
-        crafting.sendWindowProperty(this, var++, this.ee$getEnchantmentLevelCost(0));
-        crafting.sendWindowProperty(this, var++, this.ee$getEnchantmentLevelCost(1));
-        crafting.sendWindowProperty(this, var++, this.ee$getEnchantmentLevelCost(2));
-        crafting.sendWindowProperty(this, var++, this.ee$getReagentCost(0));
-        crafting.sendWindowProperty(this, var++, this.ee$getReagentCost(1));
-        crafting.sendWindowProperty(this, var++, this.ee$getReagentCost(2));
+        crafting.sendWindowProperty(this, 100, this.ee$getEnchantmentLevelCost(0));
+        crafting.sendWindowProperty(this, 101, this.ee$getEnchantmentLevelCost(1));
+        crafting.sendWindowProperty(this, 102, this.ee$getEnchantmentLevelCost(2));
+        crafting.sendWindowProperty(this, 103, this.ee$getReagentCost(0));
+        crafting.sendWindowProperty(this, 104, this.ee$getReagentCost(1));
+        crafting.sendWindowProperty(this, 105, this.ee$getReagentCost(2));
     }
 
     /**
@@ -119,10 +101,10 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
     @SideOnly(Side.CLIENT)
     @Inject(method = "updateProgressBar", at = @At("RETURN"))
     private void updateNewWindowProperties(int id, int data, CallbackInfo ci) {
-        if(id >= 10 && id <= 12) {
-            this.ee$setEnchantmentLevelCost(id - 10, data);
-        } else if(id >= 13 && id <= 15) {
-            this.ee$setReagentCost(id - 13, data);
+        if(id >= 100 && id <= 102) {
+            this.ee$setEnchantmentLevelCost(id - 100, data);
+        } else if(id >= 103 && id <= 105) {
+            this.ee$setReagentCost(id - 103, data);
         }
     }
 
@@ -150,19 +132,21 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
     private List<EnchantmentData> generateEnchantmentListEventMixin(List<EnchantmentData> original, @Local(ordinal = 1) int enchantTier) {
         ItemStack toEnchant = this.tableInventory.getStackInSlot(0);
         ItemStack reagent = this.tableInventory.getStackInSlot(1);
-        GenerateEnchantmentListEvent event = new GenerateEnchantmentListEvent(this.world, this.position, toEnchant, reagent, this.xpSeed, enchantTier, this.enchantLevels[enchantTier], original);
-        MinecraftForge.EVENT_BUS.post(event);
-        if(!event.getEnchantments().isEmpty()) {
-            //Logic is changed very slightly from Minecraft. Instead of accessing a random enchant from the list,
-            //the list is instead shuffled and the first element is the displayed enchant.
-            Collections.shuffle(event.getModifiableEnchantments(), this.rand);
-            EnchantmentData data = event.getEnchantments().get(0);
-            this.enchantLevels[enchantTier] = event.getRequiredLevel();
-            this.enchantClue[enchantTier] = Enchantment.getEnchantmentID(data.enchantment);
-            this.worldClue[enchantTier] = data.enchantmentLevel;
-            this.ee$cachedEnchants.set(enchantTier, event.getEnchantments());
-            this.ee$setEnchantmentLevelCost(enchantTier, event.getLevelCost());
-            this.ee$setReagentCost(enchantTier, event.getReagentCost());
+        if (!reagent.getItem().hasContainerItem(reagent) || reagent.getCount() == 1) {
+            GenerateEnchantmentListEvent event = new GenerateEnchantmentListEvent(this.world, this.position, toEnchant, reagent, this.xpSeed, enchantTier, this.enchantLevels[enchantTier], original);
+            MinecraftForge.EVENT_BUS.post(event);
+            if (!event.getEnchantments().isEmpty()) {
+                //Logic is changed very slightly from Minecraft. Instead of accessing a random enchant from the list,
+                //the list is instead shuffled and the first element is the displayed enchant.
+                Collections.shuffle(event.getModifiableEnchantments(), this.rand);
+                EnchantmentData data = event.getEnchantments().get(0);
+                this.enchantLevels[enchantTier] = event.getRequiredLevel();
+                this.enchantClue[enchantTier] = Enchantment.getEnchantmentID(data.enchantment);
+                this.worldClue[enchantTier] = data.enchantmentLevel;
+                this.ee$cachedEnchants.set(enchantTier, event.getEnchantments());
+                this.ee$setEnchantmentLevelCost(enchantTier, event.getLevelCost());
+                this.ee$setReagentCost(enchantTier, event.getReagentCost());
+            }
         }
         //Empty list is returned in order to bypass MC logic which will overwrite event logic.
         return Collections.emptyList();
@@ -170,19 +154,20 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
 
     /**
      * @author Invadermonky
-     * @reason Changes the enchantment table enchantLevels reset value to -1 to support level 0 enchanting.
+     * @reason Resets all event fields to their default values. Also Changes the enchantment table
+     *         enchantLevels reset value to -1 to support level 0 enchanting.
      */
     @Inject(
             method = "onCraftMatrixChanged",
             at = @At(
                     value = "FIELD",
-                    target = "Lnet/minecraft/inventory/ContainerEnchantment;enchantLevels:[I",
-                    ordinal = 7
+                    target = "Lnet/minecraft/inventory/ContainerEnchantment;worldClue:[I",
+                    ordinal = 2
             )
     )
-    private void modifyEnchantmentResetValue(IInventory inventory, CallbackInfo ci) {
+    private void resetEventValues(IInventory inventory, CallbackInfo ci) {
         Arrays.fill(this.enchantLevels, -1);
-        Arrays.fill(this.ee$reagentCost, Short.MAX_VALUE);
+        //Arrays.fill(this.ee$reagentCost, Short.MAX_VALUE);
         this.ee$enchantmentCost = new int[] {1, 2, 3};
     }
 
@@ -198,8 +183,8 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
                     ordinal = 0
             )
     )
-    private boolean allowReagentlessEnchanting(boolean isEmpty, @Local(ordinal = 0, argsOnly = true) int buttonId) {
-        return isEmpty && this.ee$getReagentCost(buttonId) != 0;
+    private boolean allowReagentlessEnchanting(boolean isEmpty, @Local(ordinal = 0, argsOnly = true) int enchantmentTier) {
+        return isEmpty && this.ee$getReagentCost(enchantmentTier) != 0;
     }
 
     /**
@@ -211,8 +196,8 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
     @Definition(id = "i", local = @Local(type = int.class, ordinal = 1))
     @Expression("itemstack1.getCount() < i")
     @ModifyExpressionValue(method = "enchantItem", at = @At("MIXINEXTRAS:EXPRESSION"))
-    private boolean overrideReagentCountCheck(boolean original, @Local(ordinal = 0, argsOnly = true) int buttonId, @Local(ordinal = 1) ItemStack reagent) {
-        return reagent.getCount() < this.ee$getReagentCost(buttonId);
+    private boolean overrideReagentCountCheck(boolean original, @Local(ordinal = 0, argsOnly = true) int enchantmentTier, @Local(ordinal = 1) ItemStack reagent) {
+        return reagent.getCount() < this.ee$getReagentCost(enchantmentTier);
     }
 
     /**
@@ -223,8 +208,8 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
     @Definition(id = "id", local = @Local(type = int.class, argsOnly = true, ordinal = 0))
     @Expression("this.enchantLevels[id] > 0")
     @ModifyExpressionValue(method = "enchantItem", at = @At("MIXINEXTRAS:EXPRESSION"))
-    private boolean overrideEnchantLevelCheck(boolean original, @Local(ordinal = 0, argsOnly = true) int buttonId) {
-        return this.enchantLevels[buttonId] >= 0;
+    private boolean overrideEnchantLevelCheck(boolean original, @Local(ordinal = 0, argsOnly = true) int enchantmentTier) {
+        return this.enchantLevels[enchantmentTier] >= 0;
     }
 
     /**
@@ -237,8 +222,8 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
     @Definition(id = "i", local = @Local(type = int.class, ordinal = 1))
     @Expression("playerIn.experienceLevel >= i")
     @ModifyExpressionValue(method = "enchantItem", at = @At("MIXINEXTRAS:EXPRESSION"))
-    private boolean overrideExperienceLevelCheck(boolean original, @Local(argsOnly = true, ordinal = 0) EntityPlayer player, @Local(argsOnly = true, ordinal = 0) int buttonId) {
-        return player.experienceLevel >= this.ee$getEnchantmentLevelCost(buttonId);
+    private boolean overrideExperienceLevelCheck(boolean original, @Local(argsOnly = true, ordinal = 0) EntityPlayer player, @Local(argsOnly = true, ordinal = 0) int enchantmentTier) {
+        return player.experienceLevel >= this.ee$getEnchantmentLevelCost(enchantmentTier);
     }
 
     /**
@@ -253,8 +238,8 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
                     target = "Lnet/minecraft/inventory/ContainerEnchantment;getEnchantmentList(Lnet/minecraft/item/ItemStack;II)Ljava/util/List;"
             )
     )
-    private List<EnchantmentData> getCachedEventEnchants(List<EnchantmentData> original, @Local(argsOnly = true, ordinal = 0) int buttonId) {
-        return this.ee$cachedEnchants.get(buttonId);
+    private List<EnchantmentData> getCachedEventEnchants(List<EnchantmentData> original, @Local(argsOnly = true, ordinal = 0) int enchantmentTier) {
+        return this.ee$cachedEnchants.get(enchantmentTier);
     }
 
     /**
@@ -268,8 +253,8 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
                     target = "Lnet/minecraft/entity/player/EntityPlayer;onEnchant(Lnet/minecraft/item/ItemStack;I)V"
             )
     )
-    public void playerOnEnchantMixin(EntityPlayer player, ItemStack toEnchant, int levels, @Local(argsOnly = true, ordinal = 0) int buttonId) {
-        player.onEnchant(toEnchant, this.ee$getEnchantmentLevelCost(buttonId));
+    public void overrideEnchantmentLevelCost(EntityPlayer player, ItemStack toEnchant, int levels, @Local(argsOnly = true, ordinal = 0) int enchantmentTier) {
+        player.onEnchant(toEnchant, this.ee$getEnchantmentLevelCost(enchantmentTier));
     }
 
     /**
@@ -283,10 +268,14 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
                     target = "Lnet/minecraft/item/ItemStack;shrink(I)V"
             )
     )
-    private void shrinkReagentMixin(ItemStack reagent, int amount, @Local(argsOnly = true, ordinal = 0) int buttonId) {
-        int toConsume = this.ee$getReagentCost(buttonId);
+    private void shrinkReagentMixin(ItemStack reagent, int amount, @Local(argsOnly = true, ordinal = 0) int enchantmentTier) {
+        int toConsume = this.ee$getReagentCost(enchantmentTier);
         if(toConsume > 0) {
-            reagent.shrink(toConsume);
+            if(reagent.getItem().hasContainerItem(reagent) && reagent.getCount() == 1) {
+                this.tableInventory.setInventorySlotContents(1, reagent.getItem().getContainerItem(reagent));
+            } else {
+                reagent.shrink(toConsume);
+            }
         }
     }
 
