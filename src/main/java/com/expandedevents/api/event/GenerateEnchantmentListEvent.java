@@ -2,9 +2,11 @@ package com.expandedevents.api.event;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
@@ -20,7 +22,9 @@ import java.util.List;
  * This Event does not have a {@link Result}.<br>
  * This event is fired on the {@link net.minecraftforge.common.MinecraftForge#EVENT_BUS}.
  */
-public class GenerateEnchantmentListEvent extends BlockEvent {
+public class GenerateEnchantmentListEvent extends PlayerEvent {
+    private final World world;
+    private final BlockPos pos;
     private final ItemStack stack;
     private final ItemStack reagent;
     private final int xpSeed;
@@ -33,8 +37,10 @@ public class GenerateEnchantmentListEvent extends BlockEvent {
     private List<EnchantmentData> unmodifiableEnchants;
     private List<EnchantmentData> modifiableEnchants;
 
-    public GenerateEnchantmentListEvent(World world, BlockPos pos, ItemStack toEnchant, ItemStack reagent, int xpSeed, int enchantTier, int enchantmentLevel, List<EnchantmentData> enchants) {
-        super(world, pos, world.getBlockState(pos));
+    public GenerateEnchantmentListEvent(World world, BlockPos pos, EntityPlayer player, ItemStack toEnchant, ItemStack reagent, int xpSeed, int enchantTier, int enchantmentLevel, List<EnchantmentData> enchants) {
+        super(player);
+        this.world = world;
+        this.pos = pos;
         this.stack = toEnchant;
         this.reagent = reagent;
         this.xpSeed = xpSeed;
@@ -42,6 +48,22 @@ public class GenerateEnchantmentListEvent extends BlockEvent {
         this.originalEnchantmentLevel = this.enchantmentLevel = enchantmentLevel;
         this.levelCost = this.reagentCost = enchantTier + 1;
         this.unmodifiableEnchants = this.originalEnchants = enchants;
+    }
+
+    /**
+     * Returns the enchanting table world object.
+     */
+    public World getWorld()
+    {
+        return world;
+    }
+
+    /**
+     * Returns the position of the enchanting table.
+     */
+    public BlockPos getPos()
+    {
+        return pos;
     }
 
     /**

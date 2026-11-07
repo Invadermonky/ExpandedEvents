@@ -44,6 +44,7 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
     @Shadow public int[] worldClue;
     @Shadow public int[] enchantLevels;
 
+    @Unique private EntityPlayer ee$playerCapture;
     @Unique private List<List<EnchantmentData>> ee$cachedEnchants;
     @Unique private int[] ee$enchantmentCost;
     @Unique private int[] ee$reagentCost;
@@ -76,6 +77,7 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
     @Inject(method = "Lnet/minecraft/inventory/ContainerEnchantment;<init>(Lnet/minecraft/entity/player/InventoryPlayer;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V", at = @At("TAIL"))
     private void setEnchantLevels(InventoryPlayer playerInv, World worldIn, BlockPos pos, CallbackInfo ci) {
         Arrays.fill(this.enchantLevels, -1);
+        this.ee$playerCapture = playerInv.player;
         this.ee$enchantmentCost = new int[] {1, 2, 3};
         //Reagent cost are initialized at Short.MAX_VALUE to prevent flickering when the reagent slot item changes.
         this.ee$reagentCost = new int[] {Short.MAX_VALUE, Short.MAX_VALUE, Short.MAX_VALUE};
@@ -135,7 +137,7 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
         ItemStack toEnchant = this.tableInventory.getStackInSlot(0);
         ItemStack reagent = this.tableInventory.getStackInSlot(1);
         if (!reagent.getItem().hasContainerItem(reagent) || reagent.getCount() == 1) {
-            GenerateEnchantmentListEvent event = new GenerateEnchantmentListEvent(this.world, this.position, toEnchant, reagent, this.xpSeed, enchantTier, this.enchantLevels[enchantTier], original);
+            GenerateEnchantmentListEvent event = new GenerateEnchantmentListEvent(this.world, this.position, this.ee$playerCapture, toEnchant, reagent, this.xpSeed, enchantTier, this.enchantLevels[enchantTier], original);
             MinecraftForge.EVENT_BUS.post(event);
             if (!event.getEnchantments().isEmpty()) {
                 //Logic is changed very slightly from Minecraft. Instead of accessing a random enchant from the list,
