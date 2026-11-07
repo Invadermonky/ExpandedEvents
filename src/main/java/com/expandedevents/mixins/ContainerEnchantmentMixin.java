@@ -140,10 +140,7 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
             GenerateEnchantmentListEvent event = new GenerateEnchantmentListEvent(this.world, this.position, this.ee$playerCapture, toEnchant, reagent, this.xpSeed, enchantTier, this.enchantLevels[enchantTier], original);
             MinecraftForge.EVENT_BUS.post(event);
             if (!event.getEnchantments().isEmpty()) {
-                //Logic is changed very slightly from Minecraft. Instead of accessing a random enchant from the list,
-                //the list is instead shuffled and the first element is the displayed enchant.
-                Collections.shuffle(event.getModifiableEnchantments(), this.rand);
-                EnchantmentData data = event.getEnchantments().get(0);
+                EnchantmentData data = event.getEnchantments().get(this.rand.nextInt(event.getEnchantments().size()));
                 this.enchantLevels[enchantTier] = event.getRequiredLevel();
                 this.enchantClue[enchantTier] = Enchantment.getEnchantmentID(data.enchantment);
                 this.worldClue[enchantTier] = data.enchantmentLevel;
