@@ -45,9 +45,8 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
     @Shadow public int[] enchantLevels;
 
     @Unique private List<List<EnchantmentData>> ee$cachedEnchants;
-    @Unique private int[] ee$enchantmentCost = new int[] {1, 2, 3};
-    //Reagent cost are initialized at Short.MAX_VALUE to prevent flickering when the reagent slot item changes.
-    @Unique private int[] ee$reagentCost = new int[] {Short.MAX_VALUE, Short.MAX_VALUE, Short.MAX_VALUE};
+    @Unique private int[] ee$enchantmentCost;
+    @Unique private int[] ee$reagentCost;
 
     @Override
     public int ee$getEnchantmentLevelCost(int enchantmentTier) {
@@ -77,6 +76,9 @@ public abstract class ContainerEnchantmentMixin extends Container implements IEn
     @Inject(method = "Lnet/minecraft/inventory/ContainerEnchantment;<init>(Lnet/minecraft/entity/player/InventoryPlayer;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V", at = @At("TAIL"))
     private void setEnchantLevels(InventoryPlayer playerInv, World worldIn, BlockPos pos, CallbackInfo ci) {
         Arrays.fill(this.enchantLevels, -1);
+        this.ee$enchantmentCost = new int[] {1, 2, 3};
+        //Reagent cost are initialized at Short.MAX_VALUE to prevent flickering when the reagent slot item changes.
+        this.ee$reagentCost = new int[] {Short.MAX_VALUE, Short.MAX_VALUE, Short.MAX_VALUE};
     }
 
     /**
