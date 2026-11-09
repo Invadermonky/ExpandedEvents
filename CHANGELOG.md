@@ -1,4 +1,15 @@
 # Changelog
+## 1.3.3
+### Added
+- Added `GenerateEnchantmentListEvent#getPlayer()` to access player directly
+### Changed
+- Modified several ContainerEnchantment mixins for EnchantmentControl compatibility
+- `GenerateEnchantmentListEvent` event now extends `PlayerEvent` instead of `BlockEvent`
+### Fixed
+- Fixed `GenerateEnchantmentListEvent` where the event could modify an unmodifiable list
+
+---
+
 ## 1.3.2
 ### Added
 - Enchanting Table Lapis Lazuli slot now supports Container Items
