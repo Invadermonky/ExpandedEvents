@@ -46,7 +46,7 @@ public class GenerateEnchantmentListEvent extends PlayerEvent {
         this.enchantTier = enchantTier;
         this.originalEnchantmentLevel = this.enchantmentLevel = enchantmentLevel;
         this.levelCost = this.reagentCost = enchantTier + 1;
-        this.unmodifiableEnchants = this.originalEnchants = enchants;
+        this.unmodifiableEnchants = this.originalEnchants = Collections.unmodifiableList(enchants);
     }
 
     /**
@@ -80,7 +80,7 @@ public class GenerateEnchantmentListEvent extends PlayerEvent {
     }
 
     /**
-     *
+     * Returns the player xpSeed used for the enchantment table.
      */
     public int getXpSeed() {
         return xpSeed;

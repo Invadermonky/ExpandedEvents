@@ -33,7 +33,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.*;
 
-@Mixin(ContainerEnchantment.class)
+@Mixin(value = ContainerEnchantment.class, priority = 1001)
 public abstract class ContainerEnchantmentMixin extends Container implements IEnchantmentTableEvent {
     @Shadow public IInventory tableInventory;
     @Shadow @Final private World world;
