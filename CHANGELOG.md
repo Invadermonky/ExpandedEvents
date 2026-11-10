@@ -7,6 +7,8 @@
 - `GenerateEnchantmentListEvent` event now extends `PlayerEvent` instead of `BlockEvent`
 ### Fixed
 - Fixed `GenerateEnchantmentListEvent` where the event could modify an unmodifiable list
+- Fixed `PlayerShieldDisabledEvent` so it now fires on projectile or indirect blockable damage
+- Fixed `LivingBlockDamageEvent` applying 1 additional point of durability damage to shields
 
 ---
 

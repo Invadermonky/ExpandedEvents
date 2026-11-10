@@ -75,17 +75,27 @@ public class EntityLivingBaseMixin {
             EntityLivingBase entity = this.expandedEvents$getThis();
             EnumHand activeHand = entity.getActiveHand();
             ItemStack blockingStack = entity.getActiveItemStack();
-
             LivingBlockDamageEvent event = new LivingBlockDamageEvent(entity, blockingStack, activeHand, source, amountRef.get());
             MinecraftForge.EVENT_BUS.post(event);
-            amountRef.set(event.getShieldDamage());
+            //Shield damage is reduced by 1 to offset the extra point of durability damage added in EntityPlayer#damageShield(float)
+            amountRef.set(event.getShieldDamage() - 1);
             localRef.set(event);
-            if(event.getShieldCooldown() > 0 && entity instanceof EntityPlayer) {
-                ((EntityPlayer) entity).getCooldownTracker().setCooldown(blockingStack.getItem(), event.getShieldCooldown());
-            }
-            return event.getResult() == Event.Result.DEFAULT ? original : event.getResult() == Event.Result.ALLOW;
+            return event.getResult() == Event.Result.DEFAULT || event.getResult() == Event.Result.ALLOW;
         }
         return original;
+    }
+
+    @Inject(
+            method = "attackEntityFrom",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/util/DamageSource;isProjectile()Z"
+            )
+    )
+    private void overrideProjectileCheck(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir, @Share("blockEvent")LocalRef<LivingBlockDamageEvent> localRef) {
+        if(source.isProjectile() || !(source.getImmediateSource() instanceof EntityLivingBase)) {
+            this.addBlockingCooldownMixin(source, amount, cir, localRef);
+        }
     }
 
     /**
